@@ -6,15 +6,6 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application home.
@@ -23,7 +14,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('partials.home');
+        return view('frontend.partials.home');
     }
 
     /**
@@ -33,7 +24,7 @@ class HomeController extends Controller
      */
     public function about()
     {
-        return view('partials.about');
+        return view('frontend.partials.about');
     }
 
     /**
@@ -43,7 +34,7 @@ class HomeController extends Controller
      */
     public function contact()
     {
-        return view('partials.contact');
+        return view('frontend.partials.contact');
     }
 
     /**
@@ -53,7 +44,7 @@ class HomeController extends Controller
      */
     public function category()
     {
-        return view('partials.category');
+        return view('frontend.partials.category');
     }
 
     /**
@@ -63,6 +54,6 @@ class HomeController extends Controller
      */
     public function blogPost()
     {
-        return view('partials.blog-post');
+        return view('frontend.partials.blog-post');
     }
 }
