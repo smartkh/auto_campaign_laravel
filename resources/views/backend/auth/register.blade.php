@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app')
+@extends('backend.layouts.app')
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
                 <div class="panel-heading">Register</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                    <form class="form-horizontal" method="POST" action="">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

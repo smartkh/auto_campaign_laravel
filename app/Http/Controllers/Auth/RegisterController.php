@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+// Inlucde this classes to override function register user
+use \Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+
 class RegisterController extends Controller
 {
     /*
@@ -27,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/register';
 
     /**
      * Create a new controller instance.
@@ -36,7 +40,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
     /**
@@ -53,6 +57,40 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
+
+    /**
+     * Handle a register form for display
+     */
+    public function showRegistrationForm(){
+        return view('backend.partials.register');
+    }
+
+    public function store(Request $request){
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+
+        $user->save();
+
+        return response()->json(['success' => 'Congratulation! A user is successfully created']);
+    }
+    
+    // /**
+    //  * Override register a user
+    //  * Handle a registration request for the application.
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function register(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+
+    //     event(new Registered($user = $this->create($request->all())));
+
+    //     return $this->registered($request, $user)
+    //         ?: redirect($this->redirectPath());
+    // }
 
     /**
      * Create a new user instance after a valid registration.

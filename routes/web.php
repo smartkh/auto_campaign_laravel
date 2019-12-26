@@ -14,8 +14,14 @@
 
 Route::group(['prefix' => 'admin'], function () {
     Auth::routes();
-    Route::get('/', 'backend\HomeController@index')->name('dashboard');
-    Route::get('/dashboard', 'backend\HomeController@index')->name('dashboard');
+    Route::get('/', 'Backend\HomeController@index')->name('admin')->middleware('auth');
+    Route::get('/dashboard', 'Backend\HomeController@index')->name('dashboard')->middleware('auth');
+   
+    // Route for ajax create user
+    Route::post('/_post', 'Auth\RegisterController@store')->name('admin.user.register');
+
+    Route::get('/_datatables/data-user', 'Backend\UserController@getData')->name('datatable.user.data');
+    Route::get('/datatables', 'Backend\UserController@getIndex');
     
 });
 

@@ -8,10 +8,13 @@
   <meta name="author" content="GeeksLabs">
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
    <!-- CSRF Token -->
-   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="shortcut icon" href="{{ URL::asset('backend/img/favicon.png') }}">
 
   <title>@yield('title')</title>
+
+  {{-- Datatable CSS --}}
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
   <!-- Bootstrap CSS -->
   <link href="{{ URL::asset('backend/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -85,6 +88,8 @@
 <script src="{{ URL::asset('backend/js/jquery.sparkline.js') }}" type="text/javascript"></script>
 <script src="{{ URL::asset('backend/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js') }}"></script>
 <script src="{{ URL::asset('backend/js/owl.carousel.js') }}"></script>
+{{-- jQuery datatable --}}
+<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 <!-- jQuery full calendar -->
 <script src="{{ URL::asset('js/fullcalendar.min.js') }}"></script>
 <!-- Full Google Calendar - Calendar -->
@@ -111,6 +116,10 @@
 <script src="{{ URL::asset('backend/js/sparklines.js') }}"></script>
 <script src="{{ URL::asset('backend/js/charts.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.slimscroll.min.js') }}"></script>
+
+<!-- App scripts -->
+@stack('scripts')
+
 <script>
   //knob
   $(function() {

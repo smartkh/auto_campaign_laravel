@@ -1,4 +1,4 @@
-@extends('lfrontend.ayouts.master')
+@extends('frontend.layouts.master')
 
 @section('content')
     <!-- section -->
