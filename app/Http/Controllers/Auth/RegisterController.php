@@ -66,6 +66,7 @@ class RegisterController extends Controller
     }
 
     public function store(Request $request){
+        if($request->ajax()){
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -74,6 +75,8 @@ class RegisterController extends Controller
         $user->save();
 
         return response()->json(['success' => 'Congratulation! A user is successfully created']);
+        }
+    
     }
     
     // /**
