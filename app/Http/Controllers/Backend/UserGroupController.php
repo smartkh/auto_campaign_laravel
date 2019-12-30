@@ -37,8 +37,18 @@ class UserGroupController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getData()
+    public function getData(Request $request)
     {
-        return Datatables::of(UserGroup::query())->make(true);
+        if ($request->ajax()) {
+            $userGroup = UserGroup::query();
+            
+            return Datatables::of($userGroup)     
+                ->addColumn('action', function($model){
+                    return '<a href="#" class="btn btn-xs btn-primary" id="'.$model->id.'"><i class="icon_pencil-edit"></i></a>' . ' ' .
+                            '<a href="#" class="btn btn-xs btn-danger" id="'.$model->id.'"><i class="icon_trash_alt"></i></a>' . ' ' . 
+                            '<a href="#" class="btn btn-xs btn-default" id="'.$model->id.'"><i class="fa fa-eye"></i></a>';
+                })
+                ->make(true);
+        }
     }
 }

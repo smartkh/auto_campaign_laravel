@@ -163,7 +163,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -177,6 +176,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        //Datatable provider
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
+        // Html collective provider
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -226,7 +231,13 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
+        //datatable alias
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+
+        // Html and Form alias
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 

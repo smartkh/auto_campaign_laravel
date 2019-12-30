@@ -43,7 +43,7 @@
                                 <div class="panel-body">
                                     <div class="alert" style="display:none"></div>
                                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-                                        {{ csrf_field() }}
+                                        @csrf
 
                                         <div class="form-group{{ $errors->has('group-name') ? ' has-error' : '' }}">
                                             <label for="group-name" class="col-md-4 control-label">Group Name</label>
@@ -74,7 +74,7 @@
                                 <div class="panel-body">
                                     <div class="alert" style="display:none"></div>
                                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-                                        {{ csrf_field() }}
+                                        @csrf
 
                                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                             <label for="name" class="col-md-4 control-label">Name</label>
@@ -133,6 +133,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    </form>
                                 </div>
                             </div>
                             
@@ -146,7 +147,7 @@
             </div>
 
             {{-- User table --}}
-            <div class="col-sm-8">
+            <div class="col-sm-8 user-table-wrapper">
                 <section class="panel user-defualt-table">
                     <header class="panel-heading">
                         User Table
@@ -154,11 +155,40 @@
                     <table class="table table-responsive table-striped table-advance table-hover" id="users-table">
                         <thead>
                             <tr>
+                                <td>
+                                    <button type="submit" id="btn_delete_user" class="btn btn-danger btn-xs fa fa-trash-o"></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" value="" id="ckbCheckAll" name="user[]" />
+                                </th>
                                 <th>ID</th>
                                 <th id="display-name"><i class="icon_profile"></i> Name</th>
                                 <th id="display-email"><i class="icon_mail_alt"></i> Email</th>
                                 <th id="display-created_at"><i class="icon_calendar"></i> Created At</th>
                                 <th id="display-updated_at"><i class="icon_calendar"></i> Updated At</th>
+                                <th id="display-updated_at"><i class="icon_calendar"></i> Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </section>
+            </div>
+
+            {{-- Group table --}}
+            <div class="col-sm-8 groups-table-wrapper">
+                <section class="panel group-defualt-table">
+                    <header class="panel-heading">
+                        Group Table
+                    </header>
+                    <table class="table table-responsive table-striped table-advance table-hover" id="groups-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th id="display-name"><i class="icon_profile"></i> Group Name</th>
+                                <th id="display-created_at"><i class="icon_calendar"></i> Created At</th>
+                                <th id="display-updated_at"><i class="icon_calendar"></i> Updated At</th>
+                                <th id="display-updated_at"><i class="icon_calendar"></i> Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -170,143 +200,208 @@
 @endsection
 
 @push('scripts')
-<script>
-$(function() {
-    // default/global display user datatable
-    $('#users-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{!! route('datatable.user.data') !!}',
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name' },
-            { data: 'email', name: 'email' },
-            { data: 'created_at', name: 'created_at' },
-            { data: 'updated_at', name: 'updated_at' }
-        ],
-        order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
-    });
+    <script>
+        // JQUERY IS READY NOW
+        $(function() {
+            // START DEFAULT/GLOBAL DISPLAY DATATABLE
+            $('.groups-table-wrapper').hide();
+            $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('datatable.user.data') !!}',
+                columns: [
+                    { data: 'select', name: 'select', orderable:false, searchable: false },
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    { data: 'email', name: 'email' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'updated_at', name: 'updated_at' },
+                    { data: 'action', name:'action', orderable:false, searchable: false},
+                ],
+                order: [ [1, 'desc'] ],//set default sort of id as desc (big to small)
+            });
 
-    // click event on submit to create a user with Ajax
-    $('#ajaxUser').click(function(e){
-        e.preventDefault();
+            $('#groups-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{!! route('admin.group.data') !!}',
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'updated_at', name: 'updated_at' },
+                    {data: 'action',name:'action'},
+                ],
+                order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
+            });
+            // END DEFAULT/GLOBAL DISPLAY DATATABLE
 
-        var name = $("input[name=name]").val();
-        var password = $("input[name=password]").val();
-        var email = $("input[name=email]").val();
+            // START CLICK EVENT
+            $('#ajaxUser').click(function(e){
+                e.preventDefault();
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+                var name = $("input[name=name]").val();
+                var password = $("input[name=password]").val();
+                var email = $("input[name=email]").val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('admin.user.register') }}",
+                    data: {
+                        name: name,
+                        password: password,
+                        email: email,
+                    },
+                    success: function(result){
+                        // clear all input data
+                        $(".input").val("");
+
+                        // append message for creating successfully
+                        $('.alert').show();
+                        $('.alert').addClass('alert-success');
+                        $('.alert').removeClass('alert-danger');
+                        $('.alert').html(result.success);
+
+                        // reload datatable if new data is created successfully
+                        $('#users-table').DataTable().ajax.reload(null, false );
+                    },
+                    error: function(result){
+                        $('.alert').show();
+                        $('.alert').addClass('alert-danger');
+                        $('.alert').removeClass('alert-success');
+                        $('.alert').html('Duplicated User! This user already created.');
+                    }
+                });
+            
+            });
+
+            // Ajax click event on submit to create a group with Ajax
+            $('#ajaxGroup').click(function(e){
+                e.preventDefault();
+
+                var name = $("input[name=group-name]").val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('admin.group.create') }}",
+                    data: {
+                        name: name,
+                    },
+                    success: function(result){
+                        // clear all input data
+                        $(".input").val("");
+
+                        // append message for creating successfully
+                        $('.alert').show();
+                        $('.alert').addClass('alert-success');
+                        $('.alert').removeClass('alert-danger');
+                        $('.alert').html(result.success);
+
+                        // reload datatable if new data is created successfully
+                        $('#users-table').DataTable().ajax.reload(null, false );
+                    },
+                    error: function(result){
+                        $('.alert').show();
+                        $('.alert').addClass('alert-danger');
+                        $('.alert').removeClass('alert-success');
+                        $('.alert').html('Duplicated group! This group already created.');
+                    }
+                });
+            
+            });
+
+            //click event for open user tab
+            $('#user-tab').click(function(){
+                $('.groups-table-wrapper').hide();
+                $('.user-table-wrapper').show();
+            })
+
+            // click event for open group tab
+            $('#group-tab').click(function(){
+                $('.user-table-wrapper').hide();
+                $('.groups-table-wrapper').show();
+
+            })
+
+            // Ajax click event for deleting single record of user table
+            $('body').on('click', '.btn_delete', function(e){
+                // console.log('do delete event');
+                e.preventDefault();
+                var user_id = $(this).data('id');
+                if(user_id !== undefined){
+                    if(confirm("Are You sure want to delete !")){
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: "DELETE",
+                            url: "user/"+ $(this).data('id'),
+                            success: function (data) {
+                                console.log('success:', data);
+                                // reload datatable if new data is created successfully
+                                $('#users-table').DataTable().ajax.reload(null, false );
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                            }
+                        });
+                    }
+                }
+            })
+
+            // Ajax click event for delete multi record of user table
+            $("#btn_delete_user").on('click', function () {
+                var id = [];
+                // get each checked value of checkbox and push to an array variable
+                $(".user:checked").each(function(){
+                    id.push($(this).val());
+                });
+                // do if there is at least one row/record
+                if(id.length > 0)
+                {   // do Ajax deletion if confirm OK
+                    if(confirm("Are you sure you want to Delete this data?"))
+                    {   // excute the Ajax
+                        $.ajax({
+                            url:"{{ route('admin.multi.user.delete')}}",
+                            method: "GET",
+                            data:{ id:id },
+                            success:function(data)
+                            {
+                                // reload datatable instead of reload page
+                                $('#users-table').DataTable().ajax.reload();
+                            },
+                            error: function(data){
+                                // alert error sentence if Ajax not success
+                                alert(data);
+                            }
+                        });
+                    }
+                }
+                else
+                {   // alert message to check the checkbox at least one, so it can delete the record
+                    alert("Please select at least one checkbox");
+                }
+            });
+
+            // click event to check/uncheck all checkbox
+            $("#ckbCheckAll").click(function () {
+                $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+            });
+            // END CLICK EVENT
         });
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('admin.user.register') }}",
-            data: {
-                name: name,
-                password: password,
-                email: email,
-            },
-            success: function(result){
-                // append message for creating successfully
-                $('.alert').show();
-                $('.alert').addClass('alert-success');
-                $('.alert').removeClass('alert-danger');
-                $('.alert').html(result.success);
-
-                // reload datatable if new data is created successfully
-                $('#users-table').DataTable().ajax.reload(null, false );
-            },
-            error: function(result){
-                $('.alert').show();
-                $('.alert').addClass('alert-danger');
-                $('.alert').removeClass('alert-success');
-                $('.alert').html('Duplicated User! This user already created.');
-            }
-        });
-       
-    });
-
-    // click event on submit to create a group with Ajax
-    $('#ajaxGroup').click(function(e){
-        e.preventDefault();
-
-        var name = $("input[name=group-name]").val();
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('admin.group.create') }}",
-            data: {
-                name: name,
-            },
-            success: function(result){
-                // append message for creating successfully
-                $('.alert').show();
-                $('.alert').addClass('alert-success');
-                $('.alert').removeClass('alert-danger');
-                $('.alert').html(result.success);
-
-                // reload datatable if new data is created successfully
-                $('#users-table').DataTable().ajax.reload(null, false );
-            },
-            error: function(result){
-                $('.alert').show();
-                $('.alert').addClass('alert-danger');
-                $('.alert').removeClass('alert-success');
-                $('.alert').html('Duplicated group! This group already created.');
-            }
-        });
-       
-    });
-
-    //click event for flexible to display different datatable
-    $('#user-tab').click(function(){
-        $('#users-table').DataTable().clear().destroy();
-        $('#display-email').show();
-        $('#display-name').html('<i class="icon_profile"></i> Name');
-
-        $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('datatable.user.data') !!}',
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'updated_at', name: 'updated_at' }
-            ],
-            order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
-        });
-
-    })
-
-    $('#group-tab').click(function(){
-        $('#users-table').DataTable().clear().destroy();
-        $('#display-email').hide();
-        $('#display-name').html('<i class="icon_profile"></i> Group Name');
-    
-        $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('admin.group.data') !!}',
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'updated_at', name: 'updated_at' }
-            ],
-            order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
-        });
-    })
-});
-</script>
+    </script>
 @endpush
 
 

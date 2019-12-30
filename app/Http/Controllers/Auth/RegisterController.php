@@ -67,14 +67,14 @@ class RegisterController extends Controller
 
     public function store(Request $request){
         if($request->ajax()){
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
 
-        $user->save();
+            $user->save();
 
-        return response()->json(['success' => 'Congratulation! A user is successfully created']);
+            return response()->json(['success' => 'Congratulation! A user is successfully created']);
         }
     
     }

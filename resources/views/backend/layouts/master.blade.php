@@ -14,7 +14,7 @@
   <title>@yield('title')</title>
 
   {{-- Datatable CSS --}}
-  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+  {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
 
   <!-- Bootstrap CSS -->
   <link href="{{ URL::asset('backend/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -78,25 +78,39 @@
 <script src="{{ URL::asset('backend/js/jquery-ui-1.10.4.min.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery-1.8.3.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('backend/js/jquery-ui-1.9.2.custom.min.js') }}"></script>
+
 <!-- bootstrap -->
 <script src="{{ URL::asset('backend/js/bootstrap.min.js') }}"></script>
+
 <!-- nice scroll -->
 <script src="{{ URL::asset('backend/js/jquery.scrollTo.min.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.nicescroll.js') }}" type="text/javascript"></script>
+
 <!-- charts scripts -->
 <script src="{{ URL::asset('backend/assets/jquery-knob/js/jquery.knob.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.sparkline.js') }}" type="text/javascript"></script>
 <script src="{{ URL::asset('backend/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js') }}"></script>
 <script src="{{ URL::asset('backend/js/owl.carousel.js') }}"></script>
+
 {{-- jQuery datatable --}}
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+{{-- bootbox Js --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js.map"></script>
+
 <!-- jQuery full calendar -->
 <script src="{{ URL::asset('js/fullcalendar.min.js') }}"></script>
+
 <!-- Full Google Calendar - Calendar -->
 <script src="{{ URL::asset('backend/assets/fullcalendar/fullcalendar/fullcalendar.js') }}"></script>
+
 <!--script for this page only-->
 <script src="{{ URL::asset('backend/js/calendar-custom.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.rateit.min.js') }}"></script>
+
 <!-- custom select -->
 <script src="{{ URL::asset('backend/js/jquery.customSelect.min.js') }}"></script>
 <script src="{{ URL::asset('backend/assets/chart-master/Chart.js') }}"></script>
