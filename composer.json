@@ -5,11 +5,13 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
-        "fideloper/proxy": "~3.3",
-        "laravel/framework": "5.5.*",
+        "php": ">=7.2.26",
+        "fideloper/proxy": "^4.0",
+        "laravel/framework": "6.0.*",
+        "laravel/helpers": "^1.1",
         "laravel/tinker": "~1.0",
-        "yajra/laravel-datatables-oracle": "^8.13"
+        "laravelcollective/html": "^6.0",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
