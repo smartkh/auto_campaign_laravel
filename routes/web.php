@@ -30,6 +30,9 @@ Route::group(['prefix' => 'admin'], function () {
         // delete multi selected checkbox user
         Route::get('user/destroy-many', 'Backend\UserController@destroyMany')->name('admin.multi.user.delete');
 
+        //update/edit user via Ajax request
+        Route::post('user/update', 'Backend\UserController@update')->name('admin.user.update');
+
     # User Group Route
         // Route for creating a group via Ajax request
         Route::post('/ajax-group', 'Backend\UserGroupController@store')->name('admin.group.create');

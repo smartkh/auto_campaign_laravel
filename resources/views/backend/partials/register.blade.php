@@ -152,26 +152,28 @@
                     <header class="panel-heading">
                         User Table
                     </header>
-                    <table class="table table-responsive table-striped table-advance table-hover" id="users-table">
-                        <thead>
-                            <tr>
-                                <td>
-                                    <button type="submit" id="btn_delete_user" class="btn btn-danger btn-xs fa fa-trash-o"></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" value="" id="ckbCheckAll" name="user[]" />
-                                </th>
-                                <th>ID</th>
-                                <th id="display-name"><i class="icon_profile"></i> Name</th>
-                                <th id="display-email"><i class="icon_mail_alt"></i> Email</th>
-                                <th id="display-created_at"><i class="icon_calendar"></i> Created At</th>
-                                <th id="display-updated_at"><i class="icon_calendar"></i> Updated At</th>
-                                <th id="display-updated_at"><i class="icon_calendar"></i> Actions</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-advance table-hover" id="users-table">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <button type="submit" id="btn_delete_user" class="btn btn-danger btn-xs fa fa-trash-o"></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" value="" id="ckbCheckAll" name="user[]" />
+                                    </th>
+                                    <th>ID</th>
+                                    <th id="display-name"><i class="icon_profile"></i> Name</th>
+                                    <th id="display-email"><i class="icon_mail_alt"></i> Email</th>
+                                    <th id="display-created_at"><i class="icon_calendar"></i> Created At</th>
+                                    <th id="display-updated_at"><i class="icon_calendar"></i> Updated At</th>
+                                    <th id="display-updated_at"><i class="icon_calendar"></i> Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </section>
             </div>
 
@@ -203,8 +205,12 @@
     <script>
         // JQUERY IS READY NOW
         $(function() {
-            // START DEFAULT/GLOBAL DISPLAY DATATABLE
+            //####### START DEFAULT/GLOBAL DISPLAY DATATABLE
+
+            // on page load, hide user group datatable
             $('.groups-table-wrapper').hide();
+            
+            // retrieve user
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -220,7 +226,7 @@
                 ],
                 order: [ [1, 'desc'] ],//set default sort of id as desc (big to small)
             });
-
+            // retrieve user group
             $('#groups-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -234,9 +240,9 @@
                 ],
                 order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
             });
-            // END DEFAULT/GLOBAL DISPLAY DATATABLE
+            //####### END DEFAULT/GLOBAL DISPLAY DATATABLE
 
-            // START CLICK EVENT
+            //####### START CLICK EVENT
             $('#ajaxUser').click(function(e){
                 e.preventDefault();
 
@@ -308,7 +314,7 @@
                         $('.alert').html(result.success);
 
                         // reload datatable if new data is created successfully
-                        $('#users-table').DataTable().ajax.reload(null, false );
+                        $('#groups-table').DataTable().ajax.reload(null, false );
                     },
                     error: function(result){
                         $('.alert').show();
@@ -399,7 +405,86 @@
             $("#ckbCheckAll").click(function () {
                 $(".checkBoxClass").prop('checked', $(this).prop('checked'));
             });
-            // END CLICK EVENT
+
+            // click event to edit inline table
+            $(document).on('click', '.btn-edit', function(){
+                var current_row = $(this).closest("tr");
+                var user_id = $(this).attr('id');
+                var name = current_row.find("td:nth-child(3)").text();
+                var email = current_row.find("td:nth-child(4)").text();
+                var created_at = current_row.find("td:nth-child(5)").text()
+                var updated_at = current_row.find("td:nth-child(6)").text()
+
+                var column_checkbox = "<td><input type='checkbox' disabled /></td>";
+                var column_id = "<td>" + user_id + "</td> ";
+                var column_name = "<td><input type='text' name='new_name' class='form-control' style='font-size: 13px' value='"+ name +"'/></td>";
+                var column_email = "<td><input type='email' name='new_email' class='form-control' style='font-size: 13px' value='"+ email +"'/></td>";
+                var column_created_at = "<td>" + created_at + "</td>";
+                var column_udated_at = "<td>" + updated_at + "</td>";
+                
+                var column_action_edit = "<a href='javascript:void(0)' class='btn btn-xs btn-success btn-update' id='"+ user_id +"'><i class='fa fa-check-square'></i></a> ";
+                var column_action_delete = "<a href='javascript:void(0)' class='btn btn-xs btn-danger' disabled id='#'><i class='icon_trash_alt'></i></a> ";
+                var column_action_view = "<a href='javascript:void(0)' class='btn btn-xs btn-default' disabled id='#'><i class='fa fa-eye'></i></a>";
+                var column_action = "<td>" + column_action_edit + column_action_delete + column_action_view + "</td>";
+ 
+                var edit_row_form = "<tr> " + column_checkbox + column_id + column_name + column_email + column_created_at + column_udated_at + column_action + "</tr>";
+                
+                current_row.replaceWith(edit_row_form);
+
+                //make div editable
+                current_row.attr('contenteditable', 'true');
+
+                //add bg css
+                current_row.attr('style', 'color: lightseagreen');
+
+                $(this).focus();
+
+                $('.btn-update').addClass('check-square');
+            })
+
+            // click event for switch to original edit button
+            $('body').on('click', '.check-square', function(e){
+                e.preventDefault();
+
+                var user_id = $(this).attr('id');
+                var name = $("input[name=new_name]").val();
+                var email = $("input[name=new_email]").val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('admin.user.update') }}",
+                    type: 'POST',
+                    data: {
+                        id: user_id,
+                        name: name,
+                        email: email,
+                    },
+                    success: function(result){
+                        // reload datatable if new data is created successfully
+                        $('#users-table').DataTable().ajax.reload(null, false );
+
+                        bootbox.alert({
+                            title: 'Updated successfully',
+                            message: "Congratulation! You have updated record. Thanks",
+                            size: 'small',
+                            className: 'rubberBand animated'
+                        });
+                    },
+                    error: function(result){
+                        bootbox.alert({
+                            title: 'Updated unsuccessfully',
+                            message: "Error: name or email is empty. Please try again. Thanks",
+                            size: 'small'
+                        });
+                    }
+                });
+            })
+
+            //####### END CLICK EVENT
         });
     </script>
 @endpush

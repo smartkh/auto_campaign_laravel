@@ -14,7 +14,7 @@
   <title>@yield('title')</title>
 
   {{-- Datatable CSS --}}
-  {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"> --}}
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 
   <!-- Bootstrap CSS -->
   <link href="{{ URL::asset('backend/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -94,7 +94,7 @@
 
 {{-- jQuery datatable --}}
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
 
 {{-- bootbox Js --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.js"></script> 

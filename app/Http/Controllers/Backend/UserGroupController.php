@@ -42,9 +42,9 @@ class UserGroupController extends Controller
         if ($request->ajax()) {
             $userGroup = UserGroup::query();
             
-            return Datatables::of($userGroup)     
+            return Datatables::of($userGroup)  
                 ->addColumn('action', function($model){
-                    return '<a href="#" class="btn btn-xs btn-primary" id="'.$model->id.'"><i class="icon_pencil-edit"></i></a>' . ' ' .
+                    return '<a href="#" class="btn btn-xs btn-primary btn-edit" id="'.$model->id.'"><i class="icon_pencil-edit"></i></a>' . ' ' .
                             '<a href="#" class="btn btn-xs btn-danger" id="'.$model->id.'"><i class="icon_trash_alt"></i></a>' . ' ' . 
                             '<a href="#" class="btn btn-xs btn-default" id="'.$model->id.'"><i class="fa fa-eye"></i></a>';
                 })
