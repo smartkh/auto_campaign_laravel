@@ -6,16 +6,17 @@
       <div class="login-wrap">
         <p class="login-img"><i class="icon_lock_alt"></i></p>
 
+        @if ($errors->has('email'))
+            <span class="help-block alert alert-danger">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
+
         <div class="input-group">
           <span class="input-group-addon"><i class="icon_profile"></i></span>
           <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
         </div>
         
-        @if ($errors->has('email'))
-            <span class="help-block">
-                <strong>{{ $errors->first('email') }}</strong>
-            </span>
-        @endif
 
         <div class="input-group">
           <span class="input-group-addon"><i class="icon_key_alt"></i></span>
