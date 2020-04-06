@@ -22,24 +22,21 @@
                     <section class="panel">
                         <header class="panel-heading tab-bg-primary ">
                         <ul class="nav nav-tabs">
-                            <li class="" id="group-tab">
-                                <a data-toggle="tab" href="#create-group">Groups</a>
-                            </li>
                             <li class="active" id="user-tab">
                             <a data-toggle="tab" href="#create-user">Users</a>
                             </li>
-                            <li class="" id="role-tab">
+                            <!-- <li class="" id="role-tab">
                                 <a data-toggle="tab" href="#role">Roles</a>
                             </li>
                             <li class="" id="permission-tab">
                                 <a data-toggle="tab" href="#permission">Permission</a>
-                            </li>
+                            </li> -->
                         </ul>
                         </header>
                         <div class="panel-body">
                         <div class="tab-content">
                             {{-- create group --}}
-                            <div id="create-group" class="tab-pane">
+                          <!--   <div id="create-group" class="tab-pane">
                                 <div class="panel-body">
                                     <div class="alert" style="display:none"></div>
                                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
@@ -68,7 +65,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div>
+                            </div> -->
                             {{-- create user --}}
                             <div id="create-user" class="tab-pane active">
                                 <div class="panel-body">
@@ -137,8 +134,8 @@
                                 </div>
                             </div>
                             
-                            <div id="role" class="tab-pane">Roles</div>
-                            <div id="permission" class="tab-pane">Permissions</div>
+                           <!--  <div id="role" class="tab-pane">Roles</div>
+                            <div id="permission" class="tab-pane">Permissions</div> -->
                         </div>
                         </div>
                     </section>
@@ -177,7 +174,7 @@
                 </section>
             </div>
 
-            {{-- Group table --}}
+            <!-- {{-- Group table --}}
             <div class="col-sm-8 groups-table-wrapper">
                 <section class="panel group-defualt-table">
                     <header class="panel-heading">
@@ -195,7 +192,7 @@
                         </thead>
                     </table>
                 </section>
-            </div>
+            </div> -->
         </div>
     </section>
 </section>
@@ -208,7 +205,7 @@
             //####### START DEFAULT/GLOBAL DISPLAY DATATABLE
 
             // on page load, hide user group datatable
-            $('.groups-table-wrapper').hide();
+            // $('.groups-table-wrapper').hide();
             
             // retrieve user
             $('#users-table').DataTable({
@@ -227,19 +224,19 @@
                 order: [ [1, 'desc'] ],//set default sort of id as desc (big to small)
             });
             // retrieve user group
-            $('#groups-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{!! route('admin.group.data') !!}',
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name' },
-                    { data: 'created_at', name: 'created_at' },
-                    { data: 'updated_at', name: 'updated_at' },
-                    {data: 'action',name:'action'},
-                ],
-                order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
-            });
+            // $('#groups-table').DataTable({
+            //     processing: true,
+            //     serverSide: true,
+            //     ajax: '{!! route('admin.group.data') !!}',
+            //     columns: [
+            //         { data: 'id', name: 'id' },
+            //         { data: 'name', name: 'name' },
+            //         { data: 'created_at', name: 'created_at' },
+            //         { data: 'updated_at', name: 'updated_at' },
+            //         {data: 'action',name:'action'},
+            //     ],
+            //     order: [ [0, 'desc'] ],//set default sort of id as desc (big to small)
+            // });
             //####### END DEFAULT/GLOBAL DISPLAY DATATABLE
 
             //####### START CLICK EVENT
@@ -287,57 +284,57 @@
             });
 
             // Ajax click event on submit to create a group with Ajax
-            $('#ajaxGroup').click(function(e){
-                e.preventDefault();
+            // $('#ajaxGroup').click(function(e){
+            //     e.preventDefault();
 
-                var name = $("input[name=group-name]").val();
+            //     var name = $("input[name=group-name]").val();
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('admin.group.create') }}",
-                    data: {
-                        name: name,
-                    },
-                    success: function(result){
-                        // clear all input data
-                        $(".input").val("");
+            //     $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: "{{ route('admin.group.create') }}",
+            //         data: {
+            //             name: name,
+            //         },
+            //         success: function(result){
+            //             // clear all input data
+            //             $(".input").val("");
 
-                        // append message for creating successfully
-                        $('.alert').show();
-                        $('.alert').addClass('alert-success');
-                        $('.alert').removeClass('alert-danger');
-                        $('.alert').html(result.success);
+            //             // append message for creating successfully
+            //             $('.alert').show();
+            //             $('.alert').addClass('alert-success');
+            //             $('.alert').removeClass('alert-danger');
+            //             $('.alert').html(result.success);
 
-                        // reload datatable if new data is created successfully
-                        $('#groups-table').DataTable().ajax.reload(null, false );
-                    },
-                    error: function(result){
-                        $('.alert').show();
-                        $('.alert').addClass('alert-danger');
-                        $('.alert').removeClass('alert-success');
-                        $('.alert').html('Duplicated group! This group already created.');
-                    }
-                });
+            //             // reload datatable if new data is created successfully
+            //             $('#groups-table').DataTable().ajax.reload(null, false );
+            //         },
+            //         error: function(result){
+            //             $('.alert').show();
+            //             $('.alert').addClass('alert-danger');
+            //             $('.alert').removeClass('alert-success');
+            //             $('.alert').html('Duplicated group! This group already created.');
+            //         }
+            //     });
             
-            });
+            // });
 
             //click event for open user tab
             $('#user-tab').click(function(){
-                $('.groups-table-wrapper').hide();
+               // $('.groups-table-wrapper').hide();
                 $('.user-table-wrapper').show();
             })
 
             // click event for open group tab
-            $('#group-tab').click(function(){
-                $('.user-table-wrapper').hide();
-                $('.groups-table-wrapper').show();
+            // $('#group-tab').click(function(){
+            //     $('.user-table-wrapper').hide();
+            //     $('.groups-table-wrapper').show();
 
-            })
+            // })
 
             // Ajax click event for deleting single record of user table
             $('body').on('click', '.btn_delete', function(e){

@@ -18,6 +18,6 @@ class HomeController extends Controller
     }
 
     public function index(){
-        return view('backend.partials.dashboard');
+        return view('backend.partials.tempdashboard');
     }
 }
