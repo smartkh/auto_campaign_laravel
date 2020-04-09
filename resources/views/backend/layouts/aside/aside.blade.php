@@ -9,6 +9,18 @@
                 <span>Dashboard</span>
             </a>
         </li>
+        <li class="">
+            <a class="" href="{{ route('register') }}">
+                <i class="fa fa-user"></i>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="">
+            <a class="" href="{{ route('lnglat') }}">
+                <i class="fa fa-map-marker"></i>
+                <span>Latitude/Longitude</span>
+            </a>
+        </li>
        {{-- <li class="">
             <a class="" href="{{ route('register') }}">
                 <i class="icon_document_alt"></i>
@@ -16,16 +28,17 @@
             </a>
         </li>--}}
 
-        <li class="sub-menu">
+        {{--<li class="sub-menu">
             <a href="javascript:;" class="">
                 <i class="icon_cog"></i>
                 <span>Settings</span>
                 <span class="menu-arrow arrow_carrot-right"></span>
             </a>
             <ul class="sub">
-            <li><a class="fa fa-user" href="{{ route('register') }}"> Users</a></li>
+              <li><a class="fa fa-user" href="{{ route('register') }}"> Users</a></li>
+              <li><a class="fa fa-map-marker" href="{{ route('lnglat') }}"> Lng/Lat</a></li>
             </ul>
-        </li>
+        </li>--}}
       </ul>
       <!-- sidebar menu end-->
     </div>

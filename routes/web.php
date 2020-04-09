@@ -33,13 +33,16 @@ Route::group(['prefix' => 'admin'], function () {
         //update/edit user via Ajax request
         Route::post('user/update', 'Backend\UserController@update')->name('admin.user.update');
 
-    # User Group Route
+    # Lat/lng Route
+        Route::get('/lnglat/index', 'Backend\LngLatController@index')->name('lnglat')->middleware('auth');
+        // Route::post('/lnglat/create', 'Backend\LngLatController@store')->name('lnglat.create');
+        // Route::post('/ajax-gmaps', 'Backend\LngLatController@store')->name('admin.detect.create');
         // Route for creating a group via Ajax request
         Route::post('/ajax-group', 'Backend\UserGroupController@store')->name('admin.group.create');
         Route::get('/_group_datatable', 'Backend\UserGroupController@getData')->name('admin.group.data');
 
-        // Route for create user-group
-        Route::post('/user-group', 'Backend\UserGroupController@store')->name('admin.user-group.store');
+        // // Route for create user-group
+        // Route::post('/user-group', 'Backend\UserGroupController@store')->name('admin.user-group.store');
 
     
     

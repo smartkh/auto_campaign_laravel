@@ -131,6 +131,12 @@
 <script src="{{ URL::asset('backend/js/charts.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.slimscroll.min.js') }}"></script>
 
+<!-- GMaps Js  -->
+<script src="{{ URL::asset('backend/assets/gmap/gmap.js') }}"></script>
+
+<!-- Google API Key -->
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyDBA9qsti4Nc8Gya9jJf8QcAEspu0o6uIM"></script>
+
 <!-- App scripts -->
 @stack('scripts')
 
