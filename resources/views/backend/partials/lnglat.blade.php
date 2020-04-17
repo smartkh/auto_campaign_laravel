@@ -8,6 +8,22 @@
         width: 740px;
         height: 500px;
     }
+    h4 {
+  margin-bottom: 10px;
+}
+.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+input.parsley-error{
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+ul.parsley-errors-list {
+    padding-left: 0px;
+}
 </style>
 
 
@@ -36,14 +52,14 @@
                             <div id="create-gmaps" class="tab-pane active">
                                 <div class="panel-body">
                                     <div class="alert" style="display:none"></div>
-                                    <form class="form-horizontal" method="GET" action="{{ route('lnglat') }}">
+                                    <form data-parsley-validate="" class="form-horizontal" method="GET" action="{{ route('lnglat') }}">
                                         @csrf
 
                                         	<div class="form-group{{ $errors->has('lat') ? ' has-error' : '' }}">
                                             <label for="lat" class="col-md-4 control-label">Latitude </label>
 
                                             <div class="col-md-6">
-                                                <input id="lat" type="text" class="form-control" name="lat"  required>
+                                                <input id="lat" type="text" class="form-control" name="lat" required data-parsley-pattern="^[0-9]*\.[0-9]*" data-parsley-trigger="change" data-parsley-error-message="Decimal required" autofocus>
 
                                                 @if ($errors->has('lat'))
                                                     <span class="help-block">
@@ -57,7 +73,7 @@
                                             <label for="lng" class="col-md-4 control-label">Longitude</label>
 
                                             <div class="col-md-6">
-                                                <input id="lng" type="text" class="form-control" name="lng" value="{{ old('lng') }}" required autofocus>
+                                                <input id="lng" type="text" class="form-control" name="lng" value="{{ old('lng') }}" required data-parsley-pattern="^[0-9]*\.[0-9]*" data-parsley-trigger="change" data-parsley-error-message="Decimal required">
 
                                                 @if ($errors->has('lng'))
                                                     <span class="help-block">
@@ -71,7 +87,7 @@
                                             <label for="radius" class="col-md-4 control-label">Cicle Distance (km)</label>
 
                                             <div class="col-md-6">
-                                                <input id="radius" type="number" class="form-control" name="radius" value="{{ old('radius') }}" required autofocus>
+                                                <input id="radius" type="number" class="form-control" name="radius" value="{{ old('radius') }}" required data-parsley-pattern="^(0*([0-9]|[1-8][0-9]|9[0-9]|100))$" data-parsley-error-message="Number must be bigger than zero required" data-parsley-trigger="change">
 
                                                 @if ($errors->has('radius'))
                                                     <span class="help-block">

@@ -131,6 +131,10 @@
 <script src="{{ URL::asset('backend/js/charts.js') }}"></script>
 <script src="{{ URL::asset('backend/js/jquery.slimscroll.min.js') }}"></script>
 
+<!-- Parsley Js for validating form -->
+<script src="https://parsleyjs.org/dist/parsley.js"></script>
+<script src="https://parsleyjs.org/dist/parsley.min.js"></script>
+
 <!-- GMaps Js  -->
 <script src="{{ URL::asset('backend/assets/gmap/gmap.js') }}"></script>
 
